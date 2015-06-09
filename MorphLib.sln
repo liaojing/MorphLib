@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPUMorph", "MorphLib\MorphLib.vcxproj", "{FCA92705-A2BC-47B7-9F01-2C97390FCA16}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D} = {9B550C62-6CD9-4411-8894-E1228AAA3A5D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pyramids", "Pyramids\Pyramids.vcxproj", "{9B550C62-6CD9-4411-8894-E1228AAA3A5D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "Example\Example.vcxproj", "{4A91C513-3757-4147-8ED8-A791DB822372}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16} = {FCA92705-A2BC-47B7-9F01-2C97390FCA16}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Debug|Win32.Build.0 = Debug|Win32
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Debug|x64.ActiveCfg = Debug|x64
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Debug|x64.Build.0 = Debug|x64
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Release|Win32.ActiveCfg = Release|Win32
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Release|Win32.Build.0 = Release|Win32
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Release|x64.ActiveCfg = Release|x64
+		{FCA92705-A2BC-47B7-9F01-2C97390FCA16}.Release|x64.Build.0 = Release|x64
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Debug|Win32.Build.0 = Debug|Win32
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Debug|x64.ActiveCfg = Debug|x64
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Debug|x64.Build.0 = Debug|x64
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Release|Win32.ActiveCfg = Release|Win32
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Release|Win32.Build.0 = Release|Win32
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Release|x64.ActiveCfg = Release|x64
+		{9B550C62-6CD9-4411-8894-E1228AAA3A5D}.Release|x64.Build.0 = Release|x64
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Debug|Win32.Build.0 = Debug|Win32
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Debug|x64.ActiveCfg = Debug|x64
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Debug|x64.Build.0 = Debug|x64
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Release|Win32.ActiveCfg = Release|Win32
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Release|Win32.Build.0 = Release|Win32
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Release|x64.ActiveCfg = Release|x64
+		{4A91C513-3757-4147-8ED8-A791DB822372}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
