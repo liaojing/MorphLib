@@ -27,7 +27,7 @@ static int upsample_rows(image::rgba<float> *input, int wout,
         pre->name());
     float inv_wout = 1.f/static_cast<float>(wout);
     float inv_sw = static_cast<float>(win)*inv_wout; 
-    float r = (pre->support()+1)/2;
+    float r = (pre->support()+1)/2.f;
 #pragma omp parallel for
     for (int iout = 0; iout < hin; iout++) {
         if (iout % 13 == 0) { 
@@ -41,7 +41,7 @@ static int upsample_rows(image::rgba<float> *input, int wout,
             float sum_r = 0.f, sum_g = 0.f, 
                   sum_b = 0.f, sum_a = 0.f, 
                   sum_w = 0.f;
-            for (int j = -r+1; j <= r; j++) {
+            for (int j = int(-r+1); j <= int(r); j++) {
                 float w = pre->value(djin-j);
                 int q = iout*win+clamp.wrap(ext->wrap(cjin+j, win), win);
                 sum_r += input->r[q]*w; sum_g += input->g[q]*w; 
@@ -85,7 +85,7 @@ static int upsample_columns(image::rgba<float> *input, int hout,
         pre->name());
     float inv_hout = 1.f/static_cast<float>(hout);
     float inv_sw = static_cast<float>(hin)*inv_hout; 
-    float r = (pre->support()+1)/2;
+    float r = (pre->support()+1)/2.f;
 #pragma omp parallel for
     for (int jout = 0; jout < win; jout++) {
         if (jout % 13 == 0) { 
@@ -99,7 +99,7 @@ static int upsample_columns(image::rgba<float> *input, int hout,
             float sum_r = 0.f, sum_g = 0.f, 
                   sum_b = 0.f, sum_a = 0.f, 
                   sum_w = 0.f;
-            for (int i = -r+1; i <= r; i++) {
+            for (int i = int(-r+1); i <= int(r); i++) {
                 float w = pre->value(diin-i);
                 int q = clamp.wrap(ext->wrap(ciin+i, hin), hin)*win + jout;
                 sum_r += input->r[q]*w; sum_g += input->g[q]*w; 
@@ -137,7 +137,7 @@ static int downsample_columns(const image::rgba<float> &input, int hout,
     float inv_hin = 1.f/static_cast<float>(hin);
     float inv_sw = static_cast<float>(hout)*inv_hin; 
     float sw = 1.f/inv_sw;
-    float s = pre->support();
+    float s = float(pre->support());
 #pragma omp parallel for
     for (int jout = 0; jout < win; jout++) {
         if (jout % 13 == 0) { 
@@ -153,7 +153,7 @@ static int downsample_columns(const image::rgba<float> &input, int hout,
                   sum_b = 0.f, sum_a = 0.f, 
                   sum_w = 0.f;
             for (int iin = min_iin; iin <= max_iin; iin++) {
-                float kj = 0.5+iout-(iin+0.5f)*inv_sw;
+                float kj = 0.5f+iout-(iin+0.5f)*inv_sw;
                 float w = pre->value(kj);
                 int q = clamp.wrap(ext->wrap(iin, hin), hin)*win+jout;
                 float r = input.r[q], g = input.g[q],
@@ -187,7 +187,7 @@ static int downsample_rows(const image::rgba<float> &input, int wout,
     float inv_win = 1.f/static_cast<float>(win);
     float inv_sw = static_cast<float>(wout)*inv_win; 
     float sw = 1.f/inv_sw;
-    float s = pre->support();
+    float s = float(pre->support());
 #pragma omp parallel for
     for (int iout = 0; iout < hin; iout++) {
         if (iout % 13 == 0) { 
@@ -203,7 +203,7 @@ static int downsample_rows(const image::rgba<float> &input, int wout,
                   sum_b = 0.f, sum_a = 0.f, 
                   sum_w = 0.f;
             for (int jin = min_jin; jin <= max_jin; jin++) {
-                float kj = 0.5+jout-(jin+0.5f)*inv_sw;
+                float kj = 0.5f+jout-(jin+0.5f)*inv_sw;
                 float w = pre->value(kj);
                 int q = iout*win+clamp.wrap(ext->wrap(jin, win), win);
                 float r = input.r[q], g = input.g[q],

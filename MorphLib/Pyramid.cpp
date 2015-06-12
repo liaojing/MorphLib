@@ -74,11 +74,11 @@ void CPyramid::create_pyramid(int w, int h, unsigned char* image0, unsigned char
 	level.inverse_wh = 1.0f / (level.w*level.h);
 	levels.push_back(level);
 
-	int n =  log((float)MIN(w,h)) / log(2.0f) - log((float)start_res) / log(2.0f) + 1;
+	int n =  int(log((float)std::min(w,h)) / log(2.0f) - log((float)start_res) / log(2.0f) + 1);
 	for (int el = 1; el< n ; el++)
 	{
-		w = floor(w / 2.0f);
-		h = floor(h / 2.0f);
+		w = int(floor(w / 2.0f));
+		h = int(floor(h / 2.0f));
 		unsigned char* temp_image0 = new unsigned char[w*h * 3];
 		unsigned char* temp_image1 = new unsigned char[w*h * 3];
 		unsigned char* temp_mask0 = new unsigned char[w*h * 3];

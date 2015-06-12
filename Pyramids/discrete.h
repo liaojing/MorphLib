@@ -57,7 +57,7 @@ namespace kernel {
                 if (!tmp_v) errorf(("out of memory!"));
                 int r = m_W/2;
                 for (int i = 0; i < m_W; i++)
-                    tmp_v[i] = ker->value(r-i);
+                    tmp_v[i] = ker->value(float(r-i));
                 v = tmp_v;
                 sprintf_s(m_name, "[%.30s]", ker->name());
                 delete ker;
@@ -358,14 +358,14 @@ namespace kernel {
                 weights1(s, &b10, &a11);
                 double b20, a21, a22;
                 weights2(s, &b20, &a21, &a22);
-                double inv_s = 1./(p2(b10)*p2(b20));
+                double inv_s = 1./(p2(float(b10))*p2(float(b20)));
                 p_v[0] = p_v[6] = static_cast<float>(inv_s*(a11*a22));
-                p_v[1] = p_v[5] = static_cast<float>(inv_s*(a22 + p2(a11)*a22 
+                p_v[1] = p_v[5] = static_cast<float>(inv_s*(a22 + p2(float(a11))*a22 
                     + a11*a21*(1 + a22)));
                 p_v[2] = p_v[4] = static_cast<float>(inv_s*(a11*a22 + (1 
-                    + p2(a11))*a21*(1 + a22) + a11*(1 + p2(a21) + p2(a22))));
+                    + p2(float(a11)))*a21*(1 + a22) + a11*(1 + p2(float(a21)) + p2(float(a22)))));
                 p_v[3] = static_cast<float>(inv_s*(2*a11*a21*(1 + a22) + (1 
-                    + p2(a11)) * (1 +p2(a21) +p2(a22))));
+                    + p2(float(a11))) * (1 +p2(float(a21)) +p2(float(a22)))));
                 v = p_v;
             }
             const char *name(void) const { return m_name; } 
