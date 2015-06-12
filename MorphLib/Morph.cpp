@@ -190,7 +190,7 @@ void CMorph::upsample_level(int c_el, int n_el)
 			data[n_el].vx[index] = v.x();
 			data[n_el].vy[index] = v.y();
 		}
-	
+	delete[] result_c;
 }
 
 void CMorph::load_identity(int el)
@@ -436,6 +436,7 @@ void CMorph::optimize_highestlevel(int el)//linear solver
 	X = dec.solve(Bx);
 	Y = dec.solve(By);
 	
+	
 	//load to vx,vy
 #pragma omp parallel for
 	for (int y = 0; y<h; y++)
@@ -444,10 +445,12 @@ void CMorph::optimize_highestlevel(int el)//linear solver
 		{
 			int index = mem_index(x, y, el);
 
-			data[el].vx[index] = X(y*w + x, 0);
+			data[el].vx[index] =  X(y*w + x, 0);
 			data[el].vy[index] = Y(y*w + x, 0);
 		}
 	}
+
+	
 }
 
 

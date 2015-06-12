@@ -16,13 +16,13 @@ CPyramid::~CPyramid()
 {
 	for (int i = 0; i < levels.size(); i++)
 	{
-		if (!levels[i].image0)
+		if (levels[i].image0)
 			delete[] levels[i].image0;
-		if (!levels[i].image1)
+		if (levels[i].image1)
 			delete[] levels[i].image1;
-		if (!levels[i].mask0)
+		if (levels[i].mask0)
 			delete[] levels[i].mask0;
-		if (!levels[i].mask1)
+		if (levels[i].mask1)
 			delete[] levels[i].mask1;
 
 		levels[i].image0 = NULL;
@@ -64,6 +64,7 @@ void CPyramid::create_pyramid(int w, int h, unsigned char* image0, unsigned char
 	level.mask0 =  rgb2gray(w,h,mask0);
 	level.mask1 = rgb2gray(w,h,mask1);
 
+	
 	level.blocks_row = ((w + 4) / 5 + 3) / 4 * 4;
 	level.blocks_row += 1 - (level.blocks_row % 2);//make it odd
 	level.blocks_col = (h + 4) / 5;
@@ -112,6 +113,9 @@ void CPyramid::create_pyramid(int w, int h, unsigned char* image0, unsigned char
 
 	std::cout << "Finished building pramids \n";
 
+	delete pre;
+	delete delta;
+	delete ext;
 }
 
 float* CPyramid::rgb2gray(int w, int h, unsigned char* image)
