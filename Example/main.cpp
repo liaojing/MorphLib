@@ -104,6 +104,9 @@ int main(int argc, char *argv[])
                 int index = y*params.w + x;
                 vectors.at<Vec2f>(y, x) = Vec2f(vx[index], vy[index]);
             }
+
+		delete[] vx;
+		delete[] vy;
     }
 
 	//save the halfway parameterization vectors
