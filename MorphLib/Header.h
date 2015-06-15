@@ -1,11 +1,12 @@
-#ifndef CPUMORPH_PARAMETERS_H
-#define CPUMORPH_PARAMETERS_H
+#pragma once
 
 #include <vector>
 #include "time.h"
-#include "Eigen\Dense"
-using namespace Eigen;
+#include "Eigen/Dense"
 
+namespace MorphLib {
+
+using Eigen::Vector2f;
 
 enum BoundaryCondition
 {
@@ -16,6 +17,8 @@ enum BoundaryCondition
 
 struct ConstraintPoint
 {
+    ConstraintPoint() { }
+    ConstraintPoint(const Vector2f& plp, const Vector2f& prp) : lp(plp), rp(prp) { }
 	Vector2f lp, rp;
 };
 
@@ -61,24 +64,11 @@ public:
 
 	~CParameters()
 	{
-	   if (image0)
-		delete[] image0;
-		if (image1)
-		delete[] image1;
-		if (mask0)
-		delete[] mask0;
-		if (mask1)
-		delete[] mask1;
-		image0 = NULL;
-		image1 = NULL;
-		mask0 = NULL;
-		mask1 = NULL;
-		ui_points.clear();
-	};
+	}
 
 };
 
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
+// #define MAX(a, b) ((a) > (b) ? (a) : (b))
+// #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-#endif
+} // namespace MorphLib

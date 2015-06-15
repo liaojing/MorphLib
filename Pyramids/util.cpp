@@ -4,8 +4,8 @@
 
 namespace util {
     int match(const char *argument, const char *option, const char **value) {
-        int length = strlen(option);
-        if (option[length-1] == ':') length--;
+        size_t length = strlen(option);
+        if (length>0 && option[length-1] == ':') length--;
         if (strncmp(argument, option, length) == 0 
             && (argument[length] == ':' || argument[length] == '(' 
                 || !argument[length])) {

@@ -2,7 +2,9 @@
 #include "Header.h"
 #include "Pyramid.h"
 
-typedef struct {
+namespace MorphLib {
+
+struct CData {
 	//ssim
 	struct {
 		float *cross01, *var0, *var1, *mean0, *mean1, *luma0, *luma1;
@@ -21,7 +23,7 @@ typedef struct {
 	{
 		float *axy, *bx, *by;
 
-	}ui;
+	} ui;
 
 
 	float *mask_ign;
@@ -34,18 +36,16 @@ typedef struct {
 	bool* improving_mask;
 	int improving;
 
-}CData;
+};
 
-typedef struct
-{
+struct Pixel {
 	float x;
 	float y;
 	int index;
-}Pixel;
+};
 
 //3*3 matrix
-class NBMatrix
-{
+class NBMatrix {
 public:
 	float data[3][3];
 	NBMatrix(){ memset(data, 0, 9 * sizeof(float)); }
@@ -146,8 +146,7 @@ public:
 
 
 
-class CMorph
-{
+class CMorph {
 public:
 	CMorph(CParameters &paramsParameters);
 	~CMorph();
@@ -187,7 +186,6 @@ private:
 	template <class CNEI, class COPER>
 	void ssim_update(NBMatrix& mean0, NBMatrix& mean1, NBMatrix& var0, NBMatrix& var1, NBMatrix& cross01, NBMatrix& counter, NBMatrix& value, float& luma0, float& luma1, int el, Pixel& p, CNEI& nei, COPER& op, float vx, float vy, float old_mask, float new_mask);
 
-
 	//tool function
 	template <class T>
 	inline T BilineaGetColor_clamp(T* img, int w, int h, float px, float py);
@@ -197,9 +195,6 @@ private:
 	inline int mem_index(int x, int y, int el);
 	inline float ModMask_ign(float mask1, float mask2);
 	
-
-
-
 private:
 	CParameters& m_params;
 	CPyramid *m_pyramid;
@@ -213,8 +208,7 @@ private:
 	friend class Init;
 };
 
-class Opt
-{
+class Opt {
 public:
 	template <class CNEI, class COPER>
 	void run(int el, Pixel& p, CNEI& nei, COPER& op, CMorph *match);
@@ -222,8 +216,7 @@ public:
 	
 };
 
-class Init
-{
+class Init {
 public:
 	template <class CNEI, class COPER>
 	void run(int el, Pixel& p, CNEI& nei, COPER& op, CMorph *match);
@@ -231,3 +224,4 @@ public:
 
 };
 
+} // namespace MorphLib

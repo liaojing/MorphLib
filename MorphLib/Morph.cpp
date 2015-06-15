@@ -1,6 +1,9 @@
 #include "Morph.h"
 #include <iostream>
 
+using namespace Eigen;
+using namespace MorphLib;
+
 #define p2(x) (x*x)
 #define SIGN(n) (n>0?1:(n<0?-1:0))
 
@@ -51,14 +54,14 @@ CMorph::CMorph(CParameters &params)
 	}
 
 	runflag = true;
-	_total_l = m_pyramid->levels.size();
+	_total_l = int(m_pyramid->levels.size());
 	_current_l = _total_l - 1;
 
 	_total_iter = _current_iter = 0;
 	int iter_num = m_params.max_iter;
 	for (int el = _total_l - 2; el >= 0; el--)
 	{
-		iter_num /= m_params.max_iter_drop_factor;
+		iter_num = int(iter_num/m_params.max_iter_drop_factor);
 		_total_iter += iter_num*m_pyramid->levels[el].w*m_pyramid->levels[el].h;
 	}
 
@@ -121,7 +124,7 @@ bool CMorph::calculate_halfway_parametrization(float* vx, float* vy, float* ssim
 
 	_max_iter = m_params.max_iter;
 	for (_current_l = _total_l - 2; _current_l >= 0; _current_l--) {
-		_max_iter /= m_params.max_iter_drop_factor;
+		_max_iter = int(_max_iter/m_params.max_iter_drop_factor);
 		std::cout << "level:" << _current_l << ", size:" << m_pyramid->levels[_current_l].w << "x" << m_pyramid->levels[_current_l].h << "\n";
 		start = clock();
 		upsample_level(_current_l + 1, _current_l);
@@ -251,14 +254,14 @@ void CMorph::initialize_incremental(int el)
 		float vx = (x1 - x0) / 2.0f;
 		float vy = (y1 - y0) / 2.0f;
 
-		for (int y = floor(con_y); y <= ceil(con_y); y++)
-			for (int x = floor(con_x); x <= ceil(con_x); x++)
+		for (int y = int(floor(con_y)); y <= int(ceil(con_y)); y++)
+			for (int x = int(floor(con_x)); x <= int(ceil(con_x)); x++)
 			{
 			if (inside((float)x, (float)y, el))
 			{
 				int index = mem_index(x, y, el);
 
-				float bilinear_w = (1.0 - fabs(y - con_y))*(1.0 - fabs(x - con_x));
+				float bilinear_w = (1.0f - fabs(y - con_y))*(1.0f - fabs(x - con_x));
 
 				data[el].ui.axy[index] += bilinear_w;
 				data[el].ui.bx[index] += 2.0f*bilinear_w*(data[el].vx[index] - vx);
@@ -274,8 +277,8 @@ void CMorph::initialize_incremental(int el)
 int CMorph::optimize_level(int el) {
 
 	
-	float x = m_pyramid->levels[el].w / 2;
-	float y = m_pyramid->levels[el].h / 2;
+	int x = m_pyramid->levels[el].w / 2;
+	int y = m_pyramid->levels[el].h / 2;
 	int index = mem_index(x, y, el);
 	float vx = data[el].vx[index];
 	float vy = data[el].vy[index];
@@ -365,12 +368,12 @@ void CMorph::optimize_highestlevel(int el)//linear solver
 		float vx = (x1 - x0) / 2.0f;
 		float vy = (y1 - y0) / 2.0f;
 
-		for (int y = floor(con_y); y <= ceil(con_y); y++)
-			for (int x = floor(con_x); x <= ceil(con_x); x++)
+		for (int y = int(floor(con_y)); y <= int(ceil(con_y)); y++)
+			for (int x = int(floor(con_x)); x <= int(ceil(con_x)); x++)
 			{
-				if (inside(x, y, el))
+				if (inside(float(x), float(y), el))
 				{
-					float bilinear_w = (1.0 - fabs(y - con_y))*(1.0 - fabs(x - con_x));
+					float bilinear_w = (1.0f - fabs(y - con_y))*(1.0f - fabs(x - con_x));
 					int i = y*w + x;
 					A(i, i) += bilinear_w;
 					Bx(i, 0) += bilinear_w*vx;
@@ -436,7 +439,6 @@ void CMorph::optimize_highestlevel(int el)//linear solver
 	X = dec.solve(Bx);
 	Y = dec.solve(By);
 	
-	
 	//load to vx,vy
 #pragma omp parallel for
 	for (int y = 0; y<h; y++)
@@ -445,12 +447,10 @@ void CMorph::optimize_highestlevel(int el)//linear solver
 		{
 			int index = mem_index(x, y, el);
 
-			data[el].vx[index] =  X(y*w + x, 0);
+			data[el].vx[index] = X(y*w + x, 0);
 			data[el].vy[index] = Y(y*w + x, 0);
 		}
 	}
-
-	
 }
 
 
@@ -721,7 +721,7 @@ float CMorph::prevent_foldover(int el, Pixel& p, CNEI& nei, COPER& op, float gx,
 	}
 
 	if (fabs(d_min)>0.00001f)
-		return MAX(td_min / d_min - m_params.eps, 0.0f);
+		return std::max(td_min / d_min - m_params.eps, 0.0f);
 	else
 		return 1.0f;
 }
@@ -859,7 +859,7 @@ float CMorph::ssim(float mean0, float mean1, float var0, float var1, float cross
 	float c = (2 * var0_root*var1_root + c2) / (var0 + var1 + c2);
 	float s = (fabs(cross01) + c3) / (var0_root*var1_root + c3);
 
-	return MIN(MAX(0.0f, 1.0f - c*s), 1.0f - m_params.ssim_clamp);
+	return std::min(std::max(0.0f, 1.0f - c*s), 1.0f - m_params.ssim_clamp);
 }
 
 template <class CNEI, class COPER>
@@ -915,10 +915,10 @@ inline T CMorph::BilineaGetColor_clamp(T* img, int w, int h, float px, float py)
 		int temp_x, temp_y;
 		temp_x = x[i];
 		temp_y = y[j];
-		temp_x = MAX(0, temp_x);
-		temp_x = MIN(w - 1, temp_x);
-		temp_y = MAX(0, temp_y);
-		temp_y = MIN(h - 1, temp_y);
+		temp_x = std::max(0, temp_x);
+		temp_x = std::min(w - 1, temp_x);
+		temp_y = std::max(0, temp_y);
+		temp_y = std::min(h - 1, temp_y);
 		value[i][j] = img[temp_y*w+temp_x];
 		}
 
