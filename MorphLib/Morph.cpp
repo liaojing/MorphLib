@@ -23,9 +23,6 @@ class Oper;
 CMorph::CMorph(CParameters &params)
 : m_params(params)
 {
-	if (m_params.w !=  m_params.h)
-		throw std::runtime_error("please make two images in the same size");
-
 	if (!m_params.image0 || !m_params.image1)
 		throw std::runtime_error("Images are empty");
 
