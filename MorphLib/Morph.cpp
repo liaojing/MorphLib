@@ -274,13 +274,7 @@ void CMorph::initialize_incremental(int el)
 int CMorph::optimize_level(int el) {
 
 	
-	int x = m_pyramid->levels[el].w / 2;
-	int y = m_pyramid->levels[el].h / 2;
-	int index = mem_index(x, y, el);
-	float vx = data[el].vx[index];
-	float vy = data[el].vy[index];
 	
-
 	clock_t start, finish;
 	start = clock();
 	int iter = 0;
@@ -292,10 +286,7 @@ int CMorph::optimize_level(int el) {
 		_current_iter += m_pyramid->levels[el].w*m_pyramid->levels[el].h;
 		if (!runflag)
 			break;
-
-		vx = data[el].vx[index];
-		vy = data[el].vy[index];
-
+	
 	}
 	finish = clock();
 	
