@@ -1,5 +1,5 @@
-#include <cstring> 
-#include <cctype> 
+#include <cstring>
+#include <cctype>
 #include "extension.h"
 
 #include "image.h"
@@ -8,8 +8,8 @@ static extension::clamp clamp;
 
 namespace image {
 
-	int load(int width, int height, unsigned char *data, image::rgba<float> *rgba) {
-		
+	template <class T> int load(int width, int height, unsigned char *data, image::rgba<T> *rgba) {
+
 		if (width != 0 && height != 0)
 		{
 			rgba->resize(height, width);
@@ -29,14 +29,15 @@ namespace image {
 		else
 		{
 			return 0;
-		}       
+		}
     }
 
-	int store(unsigned char *data, const image::rgba<float> &rgba) {
-        
+	template <class T>
+	int store(unsigned char *data, const image::rgba<T> &rgba) {
+
 		int height=rgba.height();
-		int width=rgba.width(); 
-		
+		int width=rgba.width();
+
 		#pragma omp parallel for
 		for (int i = height-1; i >= 0; i--) {
 			for (int j = 0; j < width; j++) {
@@ -44,13 +45,16 @@ namespace image {
 				float r = color::srgbcurve(clamp(rgba.r[p]));
 				float g = color::srgbcurve(clamp(rgba.g[p]));
 				float b = color::srgbcurve(clamp(rgba.b[p]));
-				
+
 				data[p * 3 + 0] = (unsigned char)(255.f*b);
 				data[p * 3 + 1] = (unsigned char)(255.f*g);
 				data[p * 3 + 2] = (unsigned char)(255.f*r);
 			}
 		}
-		
+
         return 1;
     }
+
+	template int load<float>(int width, int height, unsigned char* data, image::rgba<float>* rgba);
+	template int store<float>(unsigned char* data, const image::rgba<float>& rgba);
 }
