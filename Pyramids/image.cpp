@@ -8,6 +8,7 @@ static extension::clamp clamp;
 
 namespace image {
 
+	template<>
 	int load(int width, int height, unsigned char *data, image::rgba<float> *rgba) {
 		
 		if (width != 0 && height != 0)
@@ -32,6 +33,7 @@ namespace image {
 		}       
     }
 
+	template<>
 	int store(unsigned char *data, const image::rgba<float> &rgba) {
         
 		int height=rgba.height();

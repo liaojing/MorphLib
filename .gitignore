@@ -46,3 +46,6 @@ x64
 Network Trash Folder
 Temporary Items
 .apdisk
+
+.vs
+MorphLib/MorphLib.vcxproj.user
